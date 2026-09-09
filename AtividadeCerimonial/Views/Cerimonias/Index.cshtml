@@ -1,0 +1,134 @@
+@model IEnumerable<AtividadeCerimonial.Models.Cerimonia>
+
+@{
+    ViewData["Title"] = "Cerimônias";
+}
+
+<section class="py-5">
+    <div class="container">
+
+        <!-- Cabeçalho -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+            <div>
+                <p class="text-uppercase small fw-bold text-secondary mb-1">
+                    Área administrativa
+                </p>
+
+                <h1 class="display-5 fw-bold mb-0">
+                    Cerimônias
+                </h1>
+            </div>
+
+            <a asp-action="Criar"
+               class="btn btn-dark px-4 py-2 rounded-3">
+                + Nova cerimônia
+            </a>
+
+        </div>
+
+        <!-- Mensagem -->
+        @if (TempData["Mensagem"] is not null)
+        {
+            <div class="alert alert-success alert-dismissible fade show shadow-sm"
+                 role="alert">
+
+                @TempData["Mensagem"]
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Fechar">
+                </button>
+
+            </div>
+        }
+
+        <!-- Nenhuma cerimônia -->
+        @if (!Model.Any())
+        {
+            <div class="text-center bg-light rounded-4 p-5 border shadow-sm">
+
+                <h2 class="h4 fw-bold mb-3">
+                    Nenhuma cerimônia cadastrada
+                </h2>
+
+                <p class="text-secondary mb-4">
+                    Comece cadastrando o primeiro casal.
+                </p>
+
+                <a asp-action="Criar"
+                   class="btn btn-outline-dark px-4 rounded-3">
+                    Cadastrar agora
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <!-- Cards -->
+            <div class="row g-4">
+
+                @foreach (var c in Model)
+                {
+                    <div class="col-12 col-md-6 col-xl-4">
+
+                        <article class="card h-100 border-0 shadow-sm rounded-4">
+
+                            <div class="card-body p-4">
+
+                                <p class="text-uppercase small fw-bold text-secondary mb-2">
+                                    @c.Data.ToString("dd/MM/yyyy")
+                                </p>
+
+                                <h2 class="h4 fw-bold mb-3">
+                                    @c.Noiva &amp; @c.Noivo
+                                </h2>
+
+                                <hr class="my-3">
+
+                                <div class="mb-2">
+                                    <span class="fw-bold">
+                                        Local:
+                                    </span>
+
+                                    <span class="text-secondary">
+                                        @c.Local
+                                    </span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <span class="fw-bold">
+                                        Convidados:
+                                    </span>
+
+                                    <span class="text-secondary">
+                                        @c.QuantidadeConvidados
+                                    </span>
+                                </div>
+
+                                <form asp-action="Excluir" method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@c.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger rounded-3 px-3">
+                                        Excluir
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+</section>
